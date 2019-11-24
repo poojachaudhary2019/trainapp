@@ -76,11 +76,11 @@ class ApiController extends Controller
         
         }
 
-        if($request->has('noOfPassengers') && $request->get('noOfPassengers') != NULL)
-        {
-            $trains = Trains::where('availableSeats','>=', $request->get('noOfPassengers'));
+        // if($request->has('noOfPassengers') && $request->get('noOfPassengers') != NULL)
+        // {
+        //     $trains = Trains::where('availableSeats','>=', $request->get('noOfPassengers'));
         
-        }
+        // }
 
         $trains = $trains->get();
 
@@ -141,6 +141,7 @@ class ApiController extends Controller
         $ticket->contactPhone = $request->get('contactPhone');
         $ticket->contactAddress = $request->get('contactAddress');
         $ticket->pnr = rand(1000,999999);
+        $ticket->seatNo = $this->getTrainSeatCode().rand(1,100);
         $ticket->status = 'paid';
         $ticket->paymentMethod = 'vipps';
         $ticket->paymentNotes = '';
@@ -183,5 +184,17 @@ class ApiController extends Controller
         return response()->json($response, 200);
 
     }
+
+    function getTrainSeatCode() { 
+        $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'; 
+        $randomString = ''; 
+      
+        for ($i = 0; $i < 1; $i++) { 
+            $index = rand(0, strlen($characters) - 1); 
+            $randomString .= $characters[$index]; 
+        } 
+      
+        return $randomString; 
+    } 
     
 }
